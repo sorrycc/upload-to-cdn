@@ -1,0 +1,23 @@
+{
+  "name": "upload-to-cdn",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/sorrycc/upload-to-cdn"
+  },
+  "author": "chencheng <sorrycc@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sorrycc/upload-to-cdn/issues"
+  },
+  "homepage": "https://github.com/sorrycc/upload-to-cdn",
+  "dependencies": {
+    "cdn": "^0.2.8",
+    "tps": "^0.1.0"
+  }
+}
