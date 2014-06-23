@@ -9,7 +9,7 @@ var read = fs.readFileSync;
 
 var engines = {
   tps: require('tps'),
-  cdn: require('cdn')
+  cdn: cdn
 };
 
 var cachePath = join(process.env.HOME, '.cdncache');
@@ -46,8 +46,18 @@ module.exports = function(files, opts) {
   });
   debug('2: uncacheFiles: %s', uncacheFiles);
 
+  function cb() {
+    opts.callback && opts.callback(null, files.map(function(f) {
+      return result[f];
+    }));
+  }
+
+  if (!uncacheFiles.length) {
+    return cb();
+  }
+
   var engine = engines[opts.type || 'tps'];
-  engine(files, function(e, urls) {
+  engine(uncacheFiles, function(e, urls) {
     if (e) throw Error(e);
     debug('2: urls: %s', urls);
     // 3
@@ -60,9 +70,7 @@ module.exports = function(files, opts) {
     writeCache(result);
 
     // 5
-    opts.callback && opts.callback(null, files.map(function(f) {
-      return result[f];
-    }));
+    cb();
   });
 };
 
@@ -78,11 +86,20 @@ function md5(files) {
 
 function writeCache(o) {
   var files = Object.keys(o);
-  var md5hashs = util.md5(files);
+  var md5hashs = md5(files);
   files.map(function(f, i) {
     var md5hash = md5hashs[i];
     var url = o[f];
     var cacheFile = join(cachePath, md5hash);
     fs.writeFileSync(cacheFile, url);
+  });
+}
+
+function cdn(files, cb) {
+  require('cdn')(files, function(e, urls) {
+    if (typeof urls === 'string') {
+      urls = [urls];
+    }
+    cb(e, urls);
   });
 }
