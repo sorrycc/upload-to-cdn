@@ -3,18 +3,34 @@ var join = require('path').join;
 
 describe('utc', function() {
 
+  var tpsCache = null;
+
   it('tps', function(done) {
     var file = join(__dirname, './fixtures/a.png');
     utc([file], {
+      type: 'tps',
       callback: function(e, urls) {
         urls.length.should.be.eql(1);
         urls[0].should.be.endWith('-300-90.png');
+        tpsCache = urls[0];
         done();
       }
     });
   });
 
-  var urlCache = null;
+  it('tps with cache', function(done) {
+    var file = join(__dirname, './fixtures/a.png');
+    utc([file], {
+      type: 'tps',
+      callback: function(e, urls) {
+        urls.length.should.be.eql(1);
+        urls[0].should.be.eql(tpsCache);
+        done();
+      }
+    });
+  });
+
+  var cdnCache = null;
 
   it('cdn', function(done) {
     var file = join(__dirname, './fixtures/b.png');
@@ -23,7 +39,7 @@ describe('utc', function() {
       callback: function(e, urls) {
         urls.length.should.be.eql(1);
         urls[0].should.be.startWith('https://i.alipayobjects.com/i/localhost/png/');
-        urlCache = urls[0];
+        cdnCache = urls[0];
         done();
       }
     });
@@ -35,7 +51,7 @@ describe('utc', function() {
       type: 'cdn',
       callback: function(e, urls) {
         urls.length.should.be.eql(1);
-        urls[0].should.be.eql(urlCache);
+        urls[0].should.be.eql(cdnCache);
         done();
       }
     });
