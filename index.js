@@ -12,7 +12,8 @@ var engines = {
   cdn: cdn
 };
 
-var cachePath = join(process.env.HOME, '.cdncache');
+var home = process.env.HOME || process.env.USERPROFILE;
+var cachePath = join(home, '.cdncache');
 mkdirp.sync(cachePath);
 
 module.exports = function(files, opts) {
