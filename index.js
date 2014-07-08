@@ -57,7 +57,10 @@ module.exports = function(files, opts) {
     return cb();
   }
 
-  var engine = engines[opts.type || 'tps'];
+  var engine = opts.engine || 'tps';
+  if (typeof engine === 'string') {
+    engine = engines[engine];
+  }
   engine(uncacheFiles, function(e, urls) {
     if (e) throw Error(e);
     debug('2: urls: %s', urls);

@@ -35,7 +35,7 @@ describe('utc', function() {
   it('cdn', function(done) {
     var file = join(__dirname, './fixtures/b.png');
     utc([file], {
-      type: 'cdn',
+      engine: 'cdn',
       callback: function(e, urls) {
         urls.length.should.be.eql(1);
         urls[0].should.be.startWith('https://t.alipayobjects.com/images/');
@@ -48,7 +48,7 @@ describe('utc', function() {
   it('cdn with cache', function(done) {
     var file = join(__dirname, './fixtures/b.png');
     utc([file], {
-      type: 'cdn',
+      engine: 'cdn',
       callback: function(e, urls) {
         urls.length.should.be.eql(1);
         urls[0].should.be.eql(cdnCache);
