@@ -38,7 +38,7 @@ describe('utc', function() {
       type: 'cdn',
       callback: function(e, urls) {
         urls.length.should.be.eql(1);
-        urls[0].should.be.startWith('https://i.alipayobjects.com/i/localhost/png/');
+        urls[0].should.be.startWith('https://t.alipayobjects.com/images/');
         cdnCache = urls[0];
         done();
       }
